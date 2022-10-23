@@ -30,7 +30,11 @@ const mainController = {
   },
   bookSearchResult: (req, res) => {
     // Implement search by title
-    res.render('search');
+   
+      res.render(search)
+    
+    
+    ;
   },
   deleteBook: (req, res) => {
     // Implement delete book
@@ -69,16 +73,33 @@ const mainController = {
   },
   processLogin: (req, res) => {
     // Implement login process
-    res.render('home');
+    res.render('home')
   },
   edit: (req, res) => {
     // Implement edit book
-    res.render('editBook', {id: req.params.id})
+     db.Book.findByPk(req.params.id)
+      .then(function(book){
+        res.render('editBook', {book:book})
+      })
+    
+
   },
   processEdit: (req, res) => {
     // Implement edit book
-    res.render('home');
-  }
-};
+   db.Book.update({
+    title: req.body.title,
+    cover: req.body.cover,
+    descripcion:  req.body.descripcion,
+  },
+  {
+    where: {
+      id: req.params.id
+    }
+  })  
+  res.redirect('/books/detail/'+req.params.id)  
+},
+
+}
+
 
 module.exports = mainController;

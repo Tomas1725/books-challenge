@@ -26,29 +26,35 @@ const mainController = {
 
     
   },
+
+
+
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
+
+
   bookSearchResult: (req, res) => {
     // Implement search by title
     let title = req.body.title;
-    
-    //console.log(condition);
+    var condition = title ? {  [db.Sequelize.Op.like]: `%${title}%`  } : null;
+   
     db.Book.findAll({
       include: [{ association: 'authors' }],
-   
-       where: {title:title}})
-      
+
+       where: {title:condition}
+      })
+
       .then(books => {
           if (books.length > 0) {
-        
-          res.render('bookDetail', {books})    
+
+          res.render('search', {books})    
           }
           else {
             res.render('search', { books: [] }) 
           }
         })
-    //res.render('search');
+    
   },
     
       deleteBook: (req, res) => {

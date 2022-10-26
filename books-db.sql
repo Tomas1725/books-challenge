@@ -100,4 +100,3 @@ VALUES
     ('Fabian Webster', 'Fabian@gmail.com', 'India', '$2a$10$6a6hr260zNMZ1DtF0/Ouj.L0sKn12S48OdTSrrJJrdY/2DCqSsiBu', 1),
     ('Harper Mann', 'Harper@gmail.com', 'USA', '$2a$10$6a6hr260zNMZ1DtF0/Ouj.L0sKn12S48OdTSrrJJrdY/2DCqSsiBu', 2),
     ('Christian Wenz', 'Christian@gmail.com', 'USA', '$2a$10$6a6hr260zNMZ1DtF0/Ouj.L0sKn12S48OdTSrrJJrdY/2DCqSsiBu', 2)
-;

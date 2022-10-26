@@ -1,5 +1,6 @@
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
+const Author = require('../database/models/Author');
 
 const mainController = {
   home: (req, res) => {
@@ -30,16 +31,42 @@ const mainController = {
   },
   bookSearchResult: (req, res) => {
     // Implement search by title
+    let title = req.body.title;
+    
+    //console.log(condition);
+    db.Book.findAll({
+      include: [{ association: 'authors' }],
    
-      res.render(search)
-    
-    
-    ;
+       where: {title:title}})
+      
+      .then(books => {
+          if (books.length > 0) {
+        
+          res.render('bookDetail', {books})    
+          }
+          else {
+            res.render('search', { books: [] }) 
+          }
+        })
+    //res.render('search');
   },
-  deleteBook: (req, res) => {
-    // Implement delete book
-    res.render('home');
-  },
+    
+      deleteBook: (req, res) => {
+        // Implement delete book
+        let pId = req.params.id;
+       
+        db.Booksauthors
+        .destroy({where: {BookId: pId  }, force: true}) 
+        .then(() => {
+          db.Book.destroy({ where: { id: pId } })
+      })
+        .then(()=>{
+            return res.redirect('/')})
+        .catch(error => res.send(error)) 
+        
+      },
+
+
   authors: (req, res) => {
     db.Author.findAll()
       .then((authors) => {
@@ -49,8 +76,25 @@ const mainController = {
   },
   authorBooks: (req, res) => {
     // Implement books by author
-    res.render('authorBooks');
+    
+    let ide=req.params.id
+    var condition = ide ? {  [db.Sequelize.Op.like]: `%${ide}%`  } : null;
+    db.Author.findAll({
+      include: [{ association: 'books' }],
+
+      where: {id:condition}
+    })
+      .then((authors) => {
+        console.log(JSON.stringify(authors, null, 2));
+
+        res.render('authorBooks', { authors });
+      })
+      .catch((error) => console.log(error));
+  
   },
+
+
+
   register: (req, res) => {
     res.render('register');
   },

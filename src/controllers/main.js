@@ -148,6 +148,11 @@ const mainController = {
   })  
   res.redirect('/books/detail/'+req.params.id)  
 },
+logout: (req, res) => {
+  res.clearCookie('userEmail');
+  req.session.destroy();
+  return res.redirect('/');
+}
 
 }
 
